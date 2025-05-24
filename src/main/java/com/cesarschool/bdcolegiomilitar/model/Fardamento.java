@@ -1,29 +1,26 @@
 package com.cesarschool.bdcolegiomilitar.model;
 
+import java.time.LocalDateTime;
+
 public class Fardamento {
+    private Integer idFarda;
+    private String tipo;
     private String tamanho;
-    private int idAluno;
+    private LocalDateTime criadoEm;
+    private LocalDateTime atualizadoEm;
 
-    public Fardamento() {}
+    public Integer getIdFarda() { return idFarda; }
+    public void setIdFarda(Integer idFarda) { this.idFarda = idFarda; }
 
-    public Fardamento(String tamanho, int idAluno) {
-        this.tamanho = tamanho;
-        this.idAluno = idAluno;
-    }
+    public String getTipo() { return tipo; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
 
-    public String getTamanho() {
-        return tamanho;
-    }
+    public String getTamanho() { return tamanho; }
+    public void setTamanho(String tamanho) { this.tamanho = tamanho; }
 
-    public void setTamanho(String tamanho) {
-        this.tamanho = tamanho;
-    }
+    public LocalDateTime getCriadoEm() { return criadoEm; }
+    public void setCriadoEm(LocalDateTime criadoEm) { this.criadoEm = criadoEm; }
 
-    public int getIdAluno() {
-        return idAluno;
-    }
-
-    public void setIdAluno(int idAluno) {
-        this.idAluno = idAluno;
-    }
+    public LocalDateTime getAtualizadoEm() { return atualizadoEm; }
+    public void setAtualizadoEm(LocalDateTime atualizadoEm) { this.atualizadoEm = atualizadoEm; }
 }

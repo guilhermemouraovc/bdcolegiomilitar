@@ -1,36 +1,26 @@
 package com.cesarschool.bdcolegiomilitar.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-@Entity
 public class Nota {
+    private Integer idNota;
+    private String descricao;
+    private Double peso;
+    private LocalDateTime criadoEm;
+    private LocalDateTime atualizadoEm;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idNota;
+    public Integer getIdNota() { return idNota; }
+    public void setIdNota(Integer idNota) { this.idNota = idNota; }
 
-    private Integer valor;
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public Nota() {}
+    public Double getPeso() { return peso; }
+    public void setPeso(Double peso) { this.peso = peso; }
 
-    public Nota(Long idNota, Integer valor) {
-        this.idNota = idNota;
-        this.valor = valor;
-    }
+    public LocalDateTime getCriadoEm() { return criadoEm; }
+    public void setCriadoEm(LocalDateTime criadoEm) { this.criadoEm = criadoEm; }
 
-    public Long getIdNota() {
-        return idNota;
-    }
-
-    public void setIdNota(Long idNota) {
-        this.idNota = idNota;
-    }
-
-    public Integer getValor() {
-        return valor;
-    }
-
-    public void setValor(Integer valor) {
-        this.valor = valor;
-    }
+    public LocalDateTime getAtualizadoEm() { return atualizadoEm; }
+    public void setAtualizadoEm(LocalDateTime atualizadoEm) { this.atualizadoEm = atualizadoEm; }
 }

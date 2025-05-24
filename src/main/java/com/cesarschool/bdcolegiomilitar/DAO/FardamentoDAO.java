@@ -1,55 +1,76 @@
-package com.cesarschool.bdcolegiomilitar.DAO;
+package com.cesarschool.bdcolegiomilitar.dao;
+
 import com.cesarschool.bdcolegiomilitar.model.Fardamento;
-import java.sql.*;
-import java.util.ArrayList;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public class FardamentoDAO {
-    private Connection conn;
 
-    public FardamentoDAO(Connection conn) {
-        this.conn = conn;
+    private final JdbcTemplate jdbc;
+
+    public FardamentoDAO(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
     }
 
-    public void inserir(Fardamento fardamento) throws SQLException {
-        String sql = "INSERT INTO fardamento (tamanho, id_aluno) VALUES (?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, fardamento.getTamanho());
-            stmt.setInt(2, fardamento.getIdAluno());
-            stmt.executeUpdate();
-        }
+    // CREATE
+    public int insert(Fardamento f) {
+        String sql = """
+            INSERT INTO fardamento (tipo, tamanho)
+            VALUES (?,?)
+            """;
+        return jdbc.update(sql,
+                f.getTipo(),
+                f.getTamanho()
+        );
     }
 
-    public List<Fardamento> listarTodos() throws SQLException {
-        List<Fardamento> lista = new ArrayList<>();
+    // READ all
+    public List<Fardamento> findAll() {
         String sql = "SELECT * FROM fardamento";
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                Fardamento f = new Fardamento(
-                        rs.getString("tamanho"),
-                        rs.getInt("id_aluno")
-                );
-                lista.add(f);
-            }
-        }
-        return lista;
+        return jdbc.query(sql, (rs, rowNum) -> {
+            Fardamento f = new Fardamento();
+            f.setIdFarda(rs.getInt("id_farda"));
+            f.setTipo(rs.getString("tipo"));
+            f.setTamanho(rs.getString("tamanho"));
+            f.setCriadoEm(rs.getTimestamp("criado_em").toLocalDateTime());
+            f.setAtualizadoEm(rs.getTimestamp("atualizado_em").toLocalDateTime());
+            return f;
+        });
     }
 
-    public void atualizar(Fardamento fardamento) throws SQLException {
-        String sql = "UPDATE fardamento SET tamanho = ? WHERE id_aluno = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, fardamento.getTamanho());
-            stmt.setInt(2, fardamento.getIdAluno());
-            stmt.executeUpdate();
-        }
+    // READ by ID
+    public Fardamento findById(int id) {
+        String sql = "SELECT * FROM fardamento WHERE id_farda = ?";
+        return jdbc.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
+            Fardamento f = new Fardamento();
+            f.setIdFarda(rs.getInt("id_farda"));
+            f.setTipo(rs.getString("tipo"));
+            f.setTamanho(rs.getString("tamanho"));
+            f.setCriadoEm(rs.getTimestamp("criado_em").toLocalDateTime());
+            f.setAtualizadoEm(rs.getTimestamp("atualizado_em").toLocalDateTime());
+            return f;
+        });
     }
 
-    public void deletar(int idAluno) throws SQLException {
-        String sql = "DELETE FROM fardamento WHERE id_aluno = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, idAluno);
-            stmt.executeUpdate();
-        }
+    // UPDATE
+    public int update(Fardamento f) {
+        String sql = """
+            UPDATE fardamento
+            SET tipo = ?, tamanho = ?
+            WHERE id_farda = ?
+            """;
+        return jdbc.update(sql,
+                f.getTipo(),
+                f.getTamanho(),
+                f.getIdFarda()
+        );
+    }
+
+    // DELETE
+    public int delete(int id) {
+        return jdbc.update("DELETE FROM fardamento WHERE id_farda = ?", id);
     }
 }

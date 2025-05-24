@@ -1,33 +1,47 @@
 package com.cesarschool.bdcolegiomilitar.controller;
 
-
-import com.cesarschool.bdcolegiomilitar.DAO.FardamentoDAO;
+import com.cesarschool.bdcolegiomilitar.dao.FardamentoDAO;
 import com.cesarschool.bdcolegiomilitar.model.Fardamento;
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
+@RestController
+@RequestMapping("/fardamentos")
 public class FardamentoController {
-    private FardamentoDAO fardamentoDAO;
 
-    public FardamentoController(Connection conn) {
-        this.fardamentoDAO = new FardamentoDAO(conn);
+    private final FardamentoDAO dao;
+
+    public FardamentoController(FardamentoDAO dao) {
+        this.dao = dao;
     }
 
-    public void adicionarFardamento(Fardamento f) throws SQLException {
-        fardamentoDAO.inserir(f);
+    @GetMapping
+    public List<Fardamento> getAll() {
+        return dao.findAll();
     }
 
-    public List<Fardamento> listarFardamentos() throws SQLException {
-        return fardamentoDAO.listarTodos();
+    @GetMapping("/{id}")
+    public Fardamento getById(@PathVariable int id) {
+        return dao.findById(id);
     }
 
-    public void atualizarFardamento(Fardamento f) throws SQLException {
-        fardamentoDAO.atualizar(f);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody Fardamento f) {
+        dao.insert(f);
     }
 
-    public void removerFardamento(int idAluno) throws SQLException {
-        fardamentoDAO.deletar(idAluno);
+    @PutMapping("/{id}")
+    public void update(@PathVariable int id, @RequestBody Fardamento f) {
+        f.setIdFarda(id);
+        dao.update(f);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        dao.delete(id);
     }
 }
-
