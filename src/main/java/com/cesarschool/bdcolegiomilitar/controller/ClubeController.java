@@ -1,42 +1,42 @@
 package com.cesarschool.bdcolegiomilitar.controller;
 
-import com.cesarschool.bdcolegiomilitar.dao.DiretorDAO;
-import com.cesarschool.bdcolegiomilitar.model.Diretor;
+import com.cesarschool.bdcolegiomilitar.dao.ClubeDAO;
+import com.cesarschool.bdcolegiomilitar.model.Clube;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/diretores")
-public class DiretorController {
+@RequestMapping("/clubes")
+public class ClubeController {
 
-    private final DiretorDAO dao;
+    private final ClubeDAO dao;
 
-    public DiretorController(DiretorDAO dao) {
+    public ClubeController(ClubeDAO dao) {
         this.dao = dao;
     }
 
     @GetMapping
-    public List<Diretor> getAll() {
+    public List<Clube> getAll() {
         return dao.findAll();
     }
 
     @GetMapping("/{id}")
-    public Diretor getById(@PathVariable int id) {
+    public Clube getById(@PathVariable int id) {
         return dao.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody Diretor d) {
-        dao.insert(d);
+    public void create(@RequestBody Clube c) {
+        dao.insert(c);
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable int id, @RequestBody Diretor d) {
-        d.setIdDiretor(id);
-        dao.update(d);
+    public void update(@PathVariable int id, @RequestBody Clube c) {
+        c.setIdClube(id);
+        dao.update(c);
     }
 
     @DeleteMapping("/{id}")

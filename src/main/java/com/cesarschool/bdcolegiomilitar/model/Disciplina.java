@@ -2,30 +2,30 @@ package com.cesarschool.bdcolegiomilitar.model;
 
 import java.time.LocalDateTime;
 
-public class Diretor {
-    private Integer idDiretor;
+public class Disciplina {
+    private Integer idDisciplina;
     private String nome;
-    private String cargoMilitar;
-    private String telefone;
-    private String email;
+    private Integer cargaHoraria;
+    private String descricao;
+    private Integer idClube;
     private Boolean ativo;
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
 
-    public Integer getIdDiretor() { return idDiretor; }
-    public void setIdDiretor(Integer idDiretor) { this.idDiretor = idDiretor; }
+    public Integer getIdDisciplina() { return idDisciplina; }
+    public void setIdDisciplina(Integer idDisciplina) { this.idDisciplina = idDisciplina; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
-    public String getCargoMilitar() { return cargoMilitar; }
-    public void setCargoMilitar(String cargoMilitar) { this.cargoMilitar = cargoMilitar; }
+    public Integer getCargaHoraria() { return cargaHoraria; }
+    public void setCargaHoraria(Integer cargaHoraria) { this.cargaHoraria = cargaHoraria; }
 
-    public String getTelefone() { return telefone; }
-    public void setTelefone(String telefone) { this.telefone = telefone; }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public Integer getIdClube() { return idClube; }
+    public void setIdClube(Integer idClube) { this.idClube = idClube; }
 
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }

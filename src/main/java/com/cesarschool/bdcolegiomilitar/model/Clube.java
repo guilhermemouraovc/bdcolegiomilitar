@@ -2,30 +2,22 @@ package com.cesarschool.bdcolegiomilitar.model;
 
 import java.time.LocalDateTime;
 
-public class Diretor {
-    private Integer idDiretor;
+public class Clube {
+    private Integer idClube;
     private String nome;
-    private String cargoMilitar;
-    private String telefone;
-    private String email;
+    private String descricao;
     private Boolean ativo;
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
 
-    public Integer getIdDiretor() { return idDiretor; }
-    public void setIdDiretor(Integer idDiretor) { this.idDiretor = idDiretor; }
+    public Integer getIdClube() { return idClube; }
+    public void setIdClube(Integer idClube) { this.idClube = idClube; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
-    public String getCargoMilitar() { return cargoMilitar; }
-    public void setCargoMilitar(String cargoMilitar) { this.cargoMilitar = cargoMilitar; }
-
-    public String getTelefone() { return telefone; }
-    public void setTelefone(String telefone) { this.telefone = telefone; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }

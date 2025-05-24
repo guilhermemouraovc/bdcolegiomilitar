@@ -1,81 +1,90 @@
-package com.cesarschool.bdcolegiomilitar.DAO;
+package com.cesarschool.bdcolegiomilitar.dao;
 
 import com.cesarschool.bdcolegiomilitar.model.Diretor;
-import com.cesarschool.bdcolegiomilitar.config.DatabaseConnection;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.List;
 
+@Repository
 public class DiretorDAO {
 
-    public void adicionar(Diretor diretor) throws SQLException {
-        String sql = "INSERT INTO diretor (id_diretor, nome, cargo_militar, telefone) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, diretor.getIdDiretor());
-            stmt.setString(2, diretor.getNome());
-            stmt.setString(3, diretor.getCargoMilitar());
-            stmt.setString(4, diretor.getTelefone());
-            stmt.executeUpdate();
-        }
+    private final JdbcTemplate jdbc;
+
+    public DiretorDAO(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
     }
 
-    public List<Diretor> listarTodos() throws SQLException {
-        List<Diretor> lista = new ArrayList<>();
+    // CREATE
+    public int insert(Diretor d) {
+        String sql = """
+      INSERT INTO diretor
+        (nome, cargo_militar, telefone, email, ativo)
+      VALUES (?,?,?,?,?)
+      """;
+        return jdbc.update(sql,
+                d.getNome(),
+                d.getCargoMilitar(),
+                d.getTelefone(),
+                d.getEmail(),
+                d.getAtivo()
+        );
+    }
+
+    // READ all
+    public List<Diretor> findAll() {
         String sql = "SELECT * FROM diretor";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Diretor d = new Diretor(
-                        rs.getInt("id_diretor"),
-                        rs.getString("nome"),
-                        rs.getString("cargo_militar"),
-                        rs.getString("telefone")
-                );
-                lista.add(d);
-            }
-        }
-        return lista;
+        return jdbc.query(sql, (rs, rowNum) -> {
+            Diretor d = new Diretor();
+            d.setIdDiretor(rs.getInt("id_diretor"));
+            d.setNome(rs.getString("nome"));
+            d.setCargoMilitar(rs.getString("cargo_militar"));
+            d.setTelefone(rs.getString("telefone"));
+            d.setEmail(rs.getString("email"));
+            d.setAtivo(rs.getBoolean("ativo"));
+            d.setCriadoEm(rs.getTimestamp("criado_em").toLocalDateTime());
+            d.setAtualizadoEm(rs.getTimestamp("atualizado_em").toLocalDateTime());
+            return d;
+        });
     }
 
-    public Diretor buscarPorId(int id) throws SQLException {
+    // READ by ID
+    public Diretor findById(int id) {
         String sql = "SELECT * FROM diretor WHERE id_diretor = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Diretor(
-                            rs.getInt("id_diretor"),
-                            rs.getString("nome"),
-                            rs.getString("cargo_militar"),
-                            rs.getString("telefone")
-                    );
-                }
-            }
-        }
-        return null;
-    }
-    public void atualizar(Diretor diretor) throws SQLException {
-        String sql = "UPDATE diretor SET nome = ?, cargo_militar = ?, telefone = ? WHERE id_diretor = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, diretor.getNome());
-            stmt.setString(2, diretor.getCargoMilitar());
-            stmt.setString(3, diretor.getTelefone());
-            stmt.setInt(4, diretor.getIdDiretor());
-            stmt.executeUpdate();
-        }
+        return jdbc.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
+            Diretor d = new Diretor();
+            d.setIdDiretor(rs.getInt("id_diretor"));
+            d.setNome(rs.getString("nome"));
+            d.setCargoMilitar(rs.getString("cargo_militar"));
+            d.setTelefone(rs.getString("telefone"));
+            d.setEmail(rs.getString("email"));
+            d.setAtivo(rs.getBoolean("ativo"));
+            d.setCriadoEm(rs.getTimestamp("criado_em").toLocalDateTime());
+            d.setAtualizadoEm(rs.getTimestamp("atualizado_em").toLocalDateTime());
+            return d;
+        });
     }
 
-    public void deletar(int id) throws SQLException {
-        String sql = "DELETE FROM diretor WHERE id_diretor = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
+    // UPDATE
+    public int update(Diretor d) {
+        String sql = """
+      UPDATE diretor
+      SET nome=?, cargo_militar=?, telefone=?, email=?, ativo=?
+      WHERE id_diretor=?
+      """;
+        return jdbc.update(sql,
+                d.getNome(),
+                d.getCargoMilitar(),
+                d.getTelefone(),
+                d.getEmail(),
+                d.getAtivo(),
+                d.getIdDiretor()
+        );
+    }
+
+    // DELETE
+    public int delete(int id) {
+        return jdbc.update("DELETE FROM diretor WHERE id_diretor = ?", id);
     }
 }
