@@ -1,56 +1,47 @@
 package com.cesarschool.bdcolegiomilitar.controller;
 
+import com.cesarschool.bdcolegiomilitar.dao.ResponsavelDAO;
 import com.cesarschool.bdcolegiomilitar.model.Responsavel;
-import com.cesarschool.bdcolegiomilitar.repository.ResponsavelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/responsaveis")
 public class ResponsavelController {
 
-    @Autowired
-    private ResponsavelRepository repository;
+    private final ResponsavelDAO dao;
 
-    @PostMapping
-    public ResponseEntity<String> adicionar(@RequestBody Responsavel responsavel) {
-        repository.save(responsavel);
-        return ResponseEntity.status(201).body("Responsável cadastrado com sucesso!");
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<String> atualizar(@PathVariable Long id, @RequestBody Responsavel responsavel) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        responsavel.setIdResponsavel(id);
-        repository.save(responsavel);
-        return ResponseEntity.ok("Responsável atualizado com sucesso!");
+    public ResponsavelController(ResponsavelDAO dao) {
+        this.dao = dao;
     }
 
     @GetMapping
-    public ResponseEntity<List<Responsavel>> listar() {
-        List<Responsavel> responsaveis = repository.findAll();
-        return ResponseEntity.ok(responsaveis);
+    public List<Responsavel> getAll() {
+        return dao.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Responsavel> buscar(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(responsavel -> ResponseEntity.ok(responsavel))
-                .orElse(ResponseEntity.notFound().build());
+    public Responsavel getById(@PathVariable int id) {
+        return dao.findById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody Responsavel r) {
+        dao.insert(r);
+    }
+
+    @PutMapping("/{id}")
+    public void update(@PathVariable int id, @RequestBody Responsavel r) {
+        r.setIdResponsavel(id);
+        dao.update(r);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        repository.deleteById(id);
-        return ResponseEntity.ok("Responsável removido com sucesso!");
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        dao.delete(id);
     }
 }

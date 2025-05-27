@@ -34,12 +34,23 @@ public class DiretorDAO {
 
     // READ all
     public List<Diretor> findAll() {
-        String sql = "SELECT * FROM diretor";
+        String sql = """
+        SELECT 
+            id_diretor AS idDiretor,
+            nome,
+            cargo_militar AS cargoMilitar,
+            telefone,
+            email,
+            ativo,
+            criado_em,
+            atualizado_em
+        FROM diretor
+    """;
         return jdbc.query(sql, (rs, rowNum) -> {
             Diretor d = new Diretor();
-            d.setIdDiretor(rs.getInt("id_diretor"));
+            d.setIdDiretor(rs.getInt("idDiretor"));
             d.setNome(rs.getString("nome"));
-            d.setCargoMilitar(rs.getString("cargo_militar"));
+            d.setCargoMilitar(rs.getString("cargoMilitar"));
             d.setTelefone(rs.getString("telefone"));
             d.setEmail(rs.getString("email"));
             d.setAtivo(rs.getBoolean("ativo"));
@@ -48,7 +59,6 @@ public class DiretorDAO {
             return d;
         });
     }
-
     // READ by ID
     public Diretor findById(int id) {
         String sql = "SELECT * FROM diretor WHERE id_diretor = ?";

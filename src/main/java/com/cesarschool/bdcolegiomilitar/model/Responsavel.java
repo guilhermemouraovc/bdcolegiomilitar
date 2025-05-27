@@ -1,58 +1,38 @@
 package com.cesarschool.bdcolegiomilitar.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-@Entity
 public class Responsavel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idResponsavel;
-
+    private Integer idResponsavel;
     private String nome;
-
     private String parentesco;
-
     private String telefone;
+    private String email;
+    private Boolean ativo;
+    private LocalDateTime criadoEm;
+    private LocalDateTime atualizadoEm;
 
-    public Responsavel() {}
+    public Integer getIdResponsavel() { return idResponsavel; }
+    public void setIdResponsavel(Integer idResponsavel) { this.idResponsavel = idResponsavel; }
 
-    public Responsavel(Long idResponsavel, String nome, String parentesco, String telefone) {
-        this.idResponsavel = idResponsavel;
-        this.nome = nome;
-        this.parentesco = parentesco;
-        this.telefone = telefone;
-    }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public Long getIdResponsavel() {
-        return idResponsavel;
-    }
+    public String getParentesco() { return parentesco; }
+    public void setParentesco(String parentesco) { this.parentesco = parentesco; }
 
-    public void setIdResponsavel(Long idResponsavel) {
-        this.idResponsavel = idResponsavel;
-    }
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public Boolean getAtivo() { return ativo; }
+    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
 
-    public String getParentesco() {
-        return parentesco;
-    }
+    public LocalDateTime getCriadoEm() { return criadoEm; }
+    public void setCriadoEm(LocalDateTime criadoEm) { this.criadoEm = criadoEm; }
 
-    public void setParentesco(String parentesco) {
-        this.parentesco = parentesco;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+    public LocalDateTime getAtualizadoEm() { return atualizadoEm; }
+    public void setAtualizadoEm(LocalDateTime atualizadoEm) { this.atualizadoEm = atualizadoEm; }
 }
