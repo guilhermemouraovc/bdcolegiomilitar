@@ -12,6 +12,7 @@ public class Turma {
     private Boolean ativo;
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
+    private Diretor diretor;
 
     public Integer getIdTurma() { return idTurma; }
     public void setIdTurma(Integer idTurma) { this.idTurma = idTurma; }
@@ -39,4 +40,12 @@ public class Turma {
 
     public LocalDateTime getAtualizadoEm() { return atualizadoEm; }
     public void setAtualizadoEm(LocalDateTime atualizadoEm) { this.atualizadoEm = atualizadoEm; }
+
+    public Diretor getDiretor() {
+        return this.diretor;
+    }
+
+    public void setDiretor(Diretor diretor) {
+        this.diretor = diretor;
+    }
 }
